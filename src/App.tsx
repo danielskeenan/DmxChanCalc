@@ -18,7 +18,7 @@ export default function App() {
                         <Col>
                             <NumberInput name="chan-a"
                                          value={chanA}
-                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setChanA(parseInt(e.target.value))}
+                                         onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e.target.value, 255, setChanA)}
                             />
                         </Col>
                     </Form.Group>
@@ -27,7 +27,7 @@ export default function App() {
                         <Col>
                             <NumberInput name="chan-b"
                                          value={chanB}
-                                         onChange={(e: ChangeEvent<HTMLInputElement>) => setChanB(parseInt(e.target.value))}
+                                         onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e.target.value, 255, setChanB)}
                             />
                         </Col>
                     </Form.Group>
@@ -39,8 +39,10 @@ export default function App() {
                                          max="65535"
                                          onChange={(e: ChangeEvent<HTMLInputElement>) => {
                                              const val = parseInt(e.target.value);
-                                             setChanA((val & 0xFF00) >> 8);
-                                             setChanB(val & 0xFF);
+                                             handleChange(val, 65535, (newVal => {
+                                                 setChanA((newVal & 0xFF00) >> 8);
+                                                 setChanB(newVal & 0xFF);
+                                             }));
                                          }}
                             />
                         </Col>
@@ -49,6 +51,19 @@ export default function App() {
             </main>
         </>
     );
+}
+
+function handleChange(value: string | number, max: number, setter: (newVal: number) => void) {
+    let intVal = value;
+    if (typeof intVal !== 'number') {
+        intVal = parseInt(intVal);
+    }
+
+    // Validate
+    if (isNaN(intVal) || intVal < 0 || intVal > max) {
+        return;
+    }
+    setter(intVal);
 }
 
 function NumberInput(props: Record<string, any>) {
