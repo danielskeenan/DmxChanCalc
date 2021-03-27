@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from 'react';
-import {Col, Form, Navbar, Row} from "react-bootstrap";
+import {Col, Container, Form, Navbar, Row} from "react-bootstrap";
 import './style.scss';
 
 export default function App() {
@@ -11,7 +11,7 @@ export default function App() {
             <Navbar variant="dark" bg="dark">
                 <Navbar.Brand>DMX Channel Calculator</Navbar.Brand>
             </Navbar>
-            <main className="container">
+            <Container as={"main"}>
                 <Form>
                     <Form.Group as={Row}>
                         <Form.Label column sm={1} htmlFor="chan-a">Chan A</Form.Label>
@@ -48,7 +48,7 @@ export default function App() {
                         </Col>
                     </Form.Group>
                 </Form>
-            </main>
+            </Container>
         </>
     );
 }
